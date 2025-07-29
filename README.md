@@ -42,7 +42,7 @@ api-tarefas-dotnet/
 ## ⚙️ Como Rodar o Projeto Localmente
 
 ### 1. Clone o repositório
-  git clone https://github.com/Rester-fullstack/api-tarefas-dotnet.git
+  git clone https://github.com//api-tarefas-dotnet.git
   cd api-tarefas-dotnet
 2. Restaure os pacotes e compile
   dotnet restore
@@ -54,7 +54,7 @@ Verifique se o DefaultConnection no appsettings.json está apontando para um SQL
 
 4. Rode a aplicação
 dotnet run
-Acesse no navegador: https://localhost:5001/swagger
+Acesse no navegador
 
 🧪 Testes com Swagger ou Postman
 Exemplo: Criar tarefa (POST /api/tarefas)
@@ -67,6 +67,6 @@ Exemplo: Criar tarefa (POST /api/tarefas)
 
 Exemplo com curl:
 
-curl -X POST https://localhost:5001/api/tarefas \
+curl -X POST \
  -H "Content-Type: application/json" \
  -d "{\"titulo\": \"Nova tarefa\", \"descricao\": \"Testando\", \"concluida\": false}" -k
