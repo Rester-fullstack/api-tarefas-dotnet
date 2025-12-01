@@ -1,167 +1,157 @@
-# 📊 Dashboard de Vendas — SQL Server + Python
+# ✅ API de Tarefas — ASP.NET Core 8 + Entity Framework Core
 
-Este projeto realiza a **análise completa de vendas** usando **SQL Server** como fonte de dados e **Python** (Pandas + Matplotlib) para gerar gráficos e insights.  
-Ideal para estudos de **Data Analytics**, **ETL básico**, **visualização de dados** e **consultas SQL reais**.
+Esta é uma API REST completa para gerenciamento de **tarefas**, construída com **ASP.NET Core 8**, **Entity Framework Core**, **Migrations** e **SQL Server**.  
+Ideal para estudos e demonstração prática de CRUD, camadas, persistência e boas práticas no .NET.
 
 ---
 
 ## 🚀 Tecnologias Utilizadas
 
-### 🔹 Backend / Banco de Dados
-- **SQL Server LocalDB**
-- **Tabelas normalizadas com FK**
-- **Consultas SQL otimizadas**
+- **ASP.NET Core 8 (Web API)**
+- **Entity Framework Core 8**
+- **SQL Server / LocalDB**
+- **Migrations**
+- **Swagger / OpenAPI**
+- **LINQ**
+- **C# 12**
 
-### 🔹 Data Analysis
-- **Python 3**
-- **Pandas** — limpeza e manipulação dos dados
-- **Matplotlib** — geração dos gráficos
-- **pyodbc** — conexão com SQL Server
+---
+
+## 📌 Funcionalidades da API
+
+A API permite:
+
+✔ Criar uma tarefa  
+✔ Listar todas as tarefas  
+✔ Buscar tarefa por ID  
+✔ Atualizar tarefa  
+✔ Excluir tarefa  
+✔ Filtrar tarefas por status, título ou data (caso implementado no seu controller)
 
 ---
 
 ## 📁 Estrutura do Projeto
 
-dashboard-sql-python/
+api-tarefas-dotnet/
 │
-├── main.py # Script principal do dashboard
-├── requeriments.txt # Dependências do Python
-├── README.md # Documentação
+├── Controllers/
+│ └── TarefaController.cs # Endpoints da API
 │
-├── assets/ # (opcional) Gráficos salvos
-│ ├── vendas_mensais.png
-│ ├── produtos_top.png
-│ ├── receita_cidade.png
-│ ├── receita_categoria.png
-│ └── diagrama-db.png
+├── Data/
+│ ├── AppDbContext.cs # Classe de contexto EF Core
+│ └── SqlServerConnection.cs # (se existir)
 │
-└── database/ # (opcional) Scripts de banco
-├── create_tables.sql
-└── sample_data.sql
+├── Migrations/ # Migrações do Entity Framework
+│
+├── Models/
+│ └── Tarefa.cs # Modelo da entidade
+│
+├── Properties/
+│
+├── appsettings.json # Configurações do SQL Server
+├── Program.cs # Configuração principal do app
+└── README.md
 
 ---
 
-# 🗄️ Modelo do Banco de Dados
+## 🗄️ Modelo da Entidade
 
-O projeto usa 3 tabelas principais:
+Exemplo do modelo **Tarefa**:
 
-CREATE TABLE Clientes (
-    Id INT PRIMARY KEY IDENTITY,
-    Nome NVARCHAR(100),
-    Cidade NVARCHAR(100)
-);
+public class Tarefa
+{
+    public int Id { get; set; }
+    public string Titulo { get; set; }
+    public string Descricao { get; set; }
+    public DateTime DataCriacao { get; set; } = DateTime.Now;
+    public bool Concluida { get; set; }
+}
+🔌 Configuração do Banco de Dados
+No arquivo appsettings.json, a API usa:
 
-CREATE TABLE Produtos (
-    Id INT PRIMARY KEY IDENTITY,
-    Nome NVARCHAR(100),
-    Categoria NVARCHAR(50),
-    Preco DECIMAL(10, 2)
-);
+"ConnectionStrings": {
+  "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=TarefasDB;Trusted_Connection=True;"
+}
 
-CREATE TABLE Vendas (
-    Id INT PRIMARY KEY IDENTITY,
-    ClienteId INT FOREIGN KEY REFERENCES Clientes(Id),
-    ProdutoId INT FOREIGN KEY REFERENCES Produtos(Id),
-    Quantidade INT,
-    DataVenda DATE
-);
+🗃️ Criar a base de dados (Migrations)
+Execute os comandos:
 
-### 📈 Vendas Mensais
-![Vendas Mensais](assets/vendas_mensais.png)
+dotnet ef database update
+Para criar novas migrations:
 
-### 🥇 Produtos Mais Vendidos
-![Produtos Top](assets/produtos_top.png)
+dotnet ef migrations add NomeDaMigration
 
-### 🏙️ Receita por Cidade
-![Receita Cidade](assets/receita_cidade.png)
+📍 Endpoints da API
+Com Swagger ativo, você pode testar todos os endpoints.
 
-### 🧩 Receita por Categoria
-![Categoria](assets/receita_categoria.png)
+▶ POST — Criar tarefa
+/api/tarefa
 
-🔍 Análises Realizadas
-O dashboard apresenta:
+▶ GET — Buscar todas as tarefas
+/api/tarefa
 
-✔ Receita mensal total
-✔ Produtos mais vendidos
-✔ Receita por categoria
-✔ Receita por cidade
-✔ Quantidade total vendida por produto
-✔ Agrupamentos e agregações em SQL e Pandas
-Essas análises demonstram domínio de:
+▶ GET — Buscar por ID
+/api/tarefa/{id}
 
-Group By
+▶ PUT — Atualizar tarefa
+/api/tarefa/{id}
 
-Joins
+▶ DELETE — Excluir tarefa
+/api/tarefa/{id}
 
-Manipulação em DataFrames
+🧪 Exemplo de JSON (POST)
 
-Visualização com Matplotlib
+{
+  "titulo": "Estudar ASP.NET",
+  "descricao": "Praticar API REST com EF Core",
+  "concluida": false
+}
 
-⚙️ Como Executar o Projeto
-1️⃣ Clone o repositório
+▶ Como Executar o Projeto
+1️⃣ Clonar o repositório
 
-git clone <URL_DO_REPOSITORIO>
-cd dashboard-sql-python
+git clone <URL_DO_REPO>
+cd api-tarefas-dotnet
 
-2️⃣ Configure o banco de dados
-Crie o banco no SQL Server:
+2️⃣ Restaurar dependências
 
-CREATE DATABASE VendasDB;
-Execute os scripts (se você colocar eles na pasta database/):
+dotnet restore
 
-database/create_tables.sql
-database/sample_data.sql
+3️⃣ Atualizar banco de dados (migrations)
 
-3️⃣ Instale as dependências do Python
+dotnet ef database update
 
-pip install -r requeriments.txt
+4️⃣ Rodar a API
 
-4️⃣ Execute o dashboard:
+dotnet run
+A API ficará disponível em:
 
-python main.py
-Os gráficos serão gerados automaticamente.
+https://localhost:7080/swagger
 
-🔌 Configuração da Conexão com o Banco
-No arquivo main.py, altere a string de conexão caso necessário:
+📊 Swagger / Documentação
+A API já vem com:
 
-python
+✔ Documentação automática
+✔ Testes dos endpoints
+✔ Modelos JSON
+✔ Interface gráfica para requisições
 
-conn = pyodbc.connect(
-    "Driver={SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=VendasDB;"
-)
+🎯 Objetivo do Projeto
+Este projeto demonstra de forma prática:
 
-🧠 Como o Script Funciona (Fluxo)
-pgsql
+CRUD completo no ASP.NET Core
 
-main.py
- ├── conecta ao SQL Server via pyodbc
- ├── faz consultas SQL (joins + group by)
- ├── converte resultados em DataFrames Pandas
- ├── gera gráficos com Matplotlib
- ├── salva os gráficos em /assets
- └── exibe o dashboard
- 
-🏁 Resultado Final
-Um dashboard analítico funcional contendo gráficos como:
+DataAnnotations
 
-📈 Vendas por mês
+Entity Framework Core + Migrations
 
-🥇 Produtos mais vendidos
+Padrão REST
 
-🧩 Receita por categoria
+Uso de controllers estruturados
 
-🏙️ Receita por cidade
+Conexão com SQL Server usando appsettings.json
 
-Tudo utilizando SQL + Python, o que é muito valorizado para:
-
-vagas de análise de dados,
-
-engenharia de dados,
-
-back-end,
-
-estágios e trainees de TI.
+Boas práticas para APIs iniciantes
 
 📜 Licença
 MIT © 2025 — Ester da Costa Batista
-
